@@ -11,7 +11,7 @@ variable "nomeTabela" {
 # URI da imagem no ECR 
 variable "image_uri" {
   type    = string
-  default = "858688937735.dkr.ecr.us-east-1.amazonaws.com/titanic-ml-api:latest"
+  description = "URI da imagem no ECR — gerada no build"
 }
 
 # 2. DynamoDB  
