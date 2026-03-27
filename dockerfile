@@ -2,7 +2,6 @@
 FROM public.ecr.aws/lambda/python:3.13
 
 # Instala as dependências de ML
-# Nota: Crie um requirements.txt com: joblib, scikit-learn, numpy, boto3
 COPY requirements.txt ${LAMBDA_TASK_ROOT}
 RUN pip install -r requirements.txt
 
