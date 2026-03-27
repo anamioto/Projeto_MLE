@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: API de Escoragem - Titanic ML
+  version: 1.0.0
+  description: API Serverless para inferência do modelo do Titanic, gerida via AWS API Gateway e Lambda.
+
+paths:
+  /sobreviventes:
+    post:
+      summary: Realiza a escoragem de um passageiro
+      responses:
+        '201': 
+          description: Sucesso. Retorna o ID gerado e a probabilidade de sobrevivência.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Passenger_id: # Corrigido para bater com o Python
+                    type: string
+                    example: "550e8400-e29b-41d4-a716-446655440000"
+                  probabilidade_sobrevivencia:
+                    type: number
+                    example: 0.7512
+        '400':
+          description: Erro de validação (Features ausentes, quantidade ou tipos inválidos).
+      x-amazon-apigateway-integration:
+        uri: ${lambda_invoke_arn}
+        responses:
+          default:
+            statusCode: "201"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+
+    get:
+      summary: Lista todos os passageiros já avaliados.
+      responses:
+        '200':
+          description: Lista de passageiros retornada com sucesso do DynamoDB.
+      x-amazon-apigateway-integration:
+        uri: ${lambda_invoke_arn}
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST" # O API Gateway usa POST internamente para invocar a Lambda
+        type: "aws_proxy"
+
+  /sobreviventes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Retorna a avaliação de um passageiro específico
+      responses:
+        '200':
+          description: Dados do passageiro encontrados.
+        '404':
+          description: Passageiro não encontrado.
+      x-amazon-apigateway-integration:
+        uri: ${lambda_invoke_arn}
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+
+    delete:
+      summary: Remove o registro de um passageiro
+      responses:
+        '200':
+          description: Mensagem de confirmação da deleção.
+        '404':
+          description: ID não encontrado para deleção.
+      x-amazon-apigateway-integration:
+        uri: ${lambda_invoke_arn}
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
