@@ -47,6 +47,6 @@ A solução utiliza os seguintes serviços da AWS:
 
 ## 📈 Melhorias Futuras
 1. Implantação do tratamento dos dados a serem recebidos
-2. Implantação da correção dos tipo de dados a serem salvos no DynamoDB
+2. Implantação da correção dos tipos de dados a serem salvos no DynamoDB
 3. Implementação de CI/CD via GitHub Actions.
 4. Implementação do monitoramento e observabilidade.
